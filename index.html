@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>time table</title>
+
+</head>
+
+<body style="background: black">
+<input type="text" placeholder="year" id="year">
+<br>
+<input type="text" placeholder="month" id="month">
+<br>
+<input type="text" placeholder="day" id="day">
+<br>
+<button onclick="check()">check</button>
+<div id="ss">
+
+</div>
+<script>
+    function miladi_to_shamsi(gy, gm, gd) {
+        var g_d_m, jy, jm, jd, gy2, days;
+        g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+        gy2 = (gm > 2) ? (gy + 1) : gy;
+        days = 355666 + (365 * gy) + ~~((gy2 + 3) / 4) - ~~((gy2 + 99) / 100) + ~~((gy2 + 399) / 400) + gd + g_d_m[gm - 1];
+        jy = -1595 + (33 * ~~(days / 12053));
+        days %= 12053;
+        jy += 4 * ~~(days / 1461);
+        days %= 1461;
+        if (days > 365) {
+            jy += ~~((days - 1) / 365);
+            days = (days - 1) % 365;
+        }
+        if (days < 186) {
+            jm = 1 + ~~(days / 31);
+            jd = 1 + (days % 31);
+        } else {
+            jm = 7 + ~~((days - 186) / 30);
+            jd = 1 + ((days - 186) % 30);
+        }
+        return [jy, jm, jd];
+    }
+
+
+
+    function check () {
+        var year = parseInt(document.querySelector("#year").value);
+        var month = parseInt(document.querySelector("#month").value);
+        var day = parseInt(document.querySelector("#day").value);
+
+        var result = (miladi_to_shamsi(year, month, day));
+        document.writeln(result);
+        setInterval(function () {
+            document.writeln(Math.floor(new Date() / 1000));
+        }, 1000)
+
+    }
+
+
+</script>
+</body>
+</html>
